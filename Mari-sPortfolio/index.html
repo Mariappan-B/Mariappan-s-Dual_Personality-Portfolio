@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mariappan's Dual Personality Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Mono:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Space+Grotesk:wght@300;400;500;700&family=Caveat:wght@400;600&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --pro-bg: #080c14;
+            --pro-surface: #0d1523;
+            --pro-card: #111d2e;
+            --pro-accent: #1e90ff;
+            --pro-accent2: #00d4ff;
+            --pro-text: #e8f0fe;
+            --pro-muted: #6b7fa3;
+            --pro-border: rgba(30, 144, 255, 0.18);
+            --pro-glow: rgba(30, 144, 255, 0.12);
+            --write-bg: #1a1208;
+            --write-surface: #231a0e;
+            --write-card: #2a1f10;
+            --write-accent: #d4a853;
+            --write-accent2: #e8c97a;
+            --write-text: #f0e6d0;
+            --write-muted: #9a8060;
+            --write-border: rgba(212, 168, 83, 0.2);
+            --write-glow: rgba(212, 168, 83, 0.08);
+            --transition: 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--pro-bg);
+            color: var(--pro-text);
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        body.writer {
+            background: var(--write-bg);
+            color: var(--write-text);
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* ── NOISE OVERLAY ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            opacity: 0.4;
+        }
+
+        /* ── TOGGLE BAR ── */
+        #toggle-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 2rem;
+            background: rgba(8, 12, 20, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--pro-border);
+            transition: background var(--transition), border-color var(--transition);
+        }
+
+        body.writer #toggle-bar {
+            background: rgba(26, 18, 8, 0.85);
+            border-color: var(--write-border);
+        }
+
+        #toggle-bar .logo {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            letter-spacing: 0.08em;
+            color: var(--pro-accent);
+            transition: color var(--transition);
+        }
+
+        body.writer #toggle-bar .logo {
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            color: var(--write-accent);
+        }
+
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toggle-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--pro-muted);
+            transition: all var(--transition);
+        }
+
+        body.writer .toggle-label {
+            font-family: 'Caveat', cursive;
+            font-size: 0.9rem;
+            text-transform: none;
+            color: var(--write-muted);
+        }
+
+        .toggle-label.active {
+            color: var(--pro-accent);
+        }
+
+        body.writer .toggle-label.active {
+            color: var(--write-accent);
+        }
+
+        #mode-switch {
+            position: relative;
+            width: 52px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 13px;
+            border: 1px solid var(--pro-border);
+            cursor: pointer;
+            transition: background 0.4s, border-color 0.4s;
+            outline: none;
+        }
+
+        #mode-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pro-accent), var(--pro-accent2));
+            transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), background 0.4s;
+        }
+
+        #mode-switch.on::after {
+            transform: translateX(26px);
+            background: linear-gradient(135deg, var(--write-accent), var(--write-accent2));
+        }
+
+        /* ── MAIN CONTENT ── */
+        #professional,
+        #writer {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding-top: 56px;
+        }
+
+        #writer {
+            display: none;
+        }
+
+        body.writer #professional {
+            display: none;
+        }
+
+        body.writer #writer {
+            display: block;
+        }
+
+        /* ─────────────────────────────────────
+     PROFESSIONAL MODE
+  ───────────────────────────────────── */
+
+        /* Hero */
+        .pro-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pro-hero::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(30, 144, 255, 0.08) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .pro-hero-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--pro-accent);
+            margin-bottom: 1.25rem;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .pro-hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .pro-hero h1 span {
+            background: linear-gradient(135deg, var(--pro-accent), var(--pro-accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pro-hero-sub {
+            font-size: 1.15rem;
+            color: var(--pro-muted);
+            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            animation: fadeUp 0.8s 0.2s ease both;
+        }
+
+        .pro-hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: fadeUp 0.8s 0.3s ease both;
+        }
+
+        .btn-primary {
+            padding: 0.7rem 1.8rem;
+            background: linear-gradient(135deg, var(--pro-accent), var(--pro-accent2));
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            padding: 0.7rem 1.8rem;
+            background: transparent;
+            color: var(--pro-text);
+            border: 1px solid var(--pro-border);
+            border-radius: 6px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: border-color 0.2s, color 0.2s, transform 0.2s;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--pro-accent);
+            color: var(--pro-accent);
+            transform: translateY(-2px);
+        }
+
+        /* Scrolling grid bg */
+        .pro-hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(30, 144, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(30, 144, 255, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            pointer-events: none;
+            mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
+        }
+
+        /* Section common */
+        .pro-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 6rem 2rem;
+        }
+
+        .pro-section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--pro-accent);
+            margin-bottom: 0.6rem;
+        }
+
+        .pro-section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 3rem;
+            line-height: 1.1;
+        }
+
+        .pro-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--pro-border), transparent);
+            margin: 0 auto;
+        }
+
+        /* Skills */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .skill-card {
+            background: var(--pro-card);
+            border: 1px solid var(--pro-border);
+            border-radius: 10px;
+            padding: 1.2rem 1rem;
+            text-align: center;
+            transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+            cursor: default;
+        }
+
+        .skill-card:hover {
+            border-color: var(--pro-accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(30, 144, 255, 0.12);
+        }
+
+        .skill-icon {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.06em;
+            color: var(--pro-muted);
+            transition: color 0.25s;
+        }
+
+        .skill-card:hover .skill-name {
+            color: var(--pro-accent);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--pro-card);
+            border: 1px solid var(--pro-border);
+            border-radius: 12px;
+            padding: 1.8rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+            cursor: default;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--pro-accent), var(--pro-accent2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-card:hover {
+            border-color: var(--pro-accent);
+            transform: translateY(-4px);
+        }
+
+        .project-tag {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--pro-accent);
+            background: rgba(30, 144, 255, 0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .project-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .project-desc {
+            font-size: 0.88rem;
+            color: var(--pro-muted);
+            line-height: 1.7;
+        }
+
+        /* Education */
+        .edu-card {
+            background: var(--pro-card);
+            border: 1px solid var(--pro-border);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            max-width: 700px;
+        }
+
+        .edu-badge {
+            width: 56px;
+            height: 56px;
+            background: rgba(30, 144, 255, 0.1);
+            border: 1px solid var(--pro-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            flex-shrink: 0;
+        }
+
+        .edu-degree {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .edu-cgpa {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--pro-accent);
+            margin-top: 0.5rem;
+        }
+
+        /* Contact */
+        .contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 1.4rem;
+            background: var(--pro-card);
+            border: 1px solid var(--pro-border);
+            border-radius: 8px;
+            color: var(--pro-muted);
+            text-decoration: none;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            transition: color 0.2s, border-color 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+
+        .contact-link:hover {
+            color: var(--pro-accent);
+            border-color: var(--pro-accent);
+            transform: translateY(-2px);
+        }
+
+        /* Split section */
+        .split-section {
+            background: var(--pro-surface);
+            border-top: 1px solid var(--pro-border);
+            border-bottom: 1px solid var(--pro-border);
+            padding: 5rem 2rem;
+        }
+
+        .split-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 720px) {
+            .split-inner {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .split-side {
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid;
+        }
+
+        .split-pro {
+            background: rgba(30, 144, 255, 0.04);
+            border-color: var(--pro-border);
+        }
+
+        .split-write {
+            background: rgba(212, 168, 83, 0.06);
+            border-color: var(--write-border);
+        }
+
+        .split-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
+        .split-body {
+            font-size: 0.9rem;
+            color: var(--pro-muted);
+            line-height: 1.8;
+        }
+
+        body.writer .split-body {
+            color: var(--write-muted);
+        }
+
+        /* ─────────────────────────────────────
+     WRITER MODE
+  ───────────────────────────────────── */
+
+        .write-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .write-hero::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(212, 168, 83, 0.07) 0%, transparent 65%);
+            pointer-events: none;
+        }
+
+        .write-ornament {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--write-accent);
+            opacity: 0.4;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            animation: fadeUp 0.8s ease both;
+        }
+
+        .write-hero-intro {
+            font-family: 'Caveat', cursive;
+            font-size: 1.1rem;
+            color: var(--write-muted);
+            letter-spacing: 0.06em;
+            margin-bottom: 1rem;
+            animation: fadeUp 0.8s 0.1s ease both;
+        }
+
+        .write-hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            font-weight: 700;
+            font-style: italic;
+            line-height: 1.15;
+            color: var(--write-text);
+            margin-bottom: 1.5rem;
+            animation: fadeUp 0.8s 0.15s ease both;
+        }
+
+        .write-hero h1 em {
+            color: var(--write-accent);
+            font-style: italic;
+        }
+
+        .write-hero-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: var(--write-muted);
+            max-width: 460px;
+            line-height: 1.8;
+            animation: fadeUp 0.8s 0.25s ease both;
+        }
+
+        .write-hero-ink {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, rgba(26, 18, 8, 0.8), transparent);
+            pointer-events: none;
+        }
+
+        /* Write sections */
+        .write-section {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .write-section-eyebrow {
+            font-family: 'Caveat', cursive;
+            font-size: 1rem;
+            color: var(--write-accent);
+            margin-bottom: 0.4rem;
+        }
+
+        .write-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            font-weight: 700;
+            font-style: italic;
+            margin-bottom: 2.5rem;
+            line-height: 1.2;
+        }
+
+        /* Poetry cards */
+        .poem-card {
+            background: var(--write-card);
+            border: 1px solid var(--write-border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+            transition: border-color 0.3s;
+        }
+
+        .poem-card:hover {
+            border-color: var(--write-accent);
+        }
+
+        .poem-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .poem-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: var(--write-text);
+        }
+
+        .poem-chevron {
+            font-size: 1rem;
+            color: var(--write-accent);
+            transition: transform 0.35s;
+            flex-shrink: 0;
+        }
+
+        .poem-card.open .poem-chevron {
+            transform: rotate(180deg);
+        }
+
+        .poem-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .poem-card.open .poem-body {
+            max-height: 600px;
+        }
+
+        .poem-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--write-muted);
+            line-height: 2.1;
+            padding: 0.5rem 1.5rem 1.5rem;
+            border-top: 1px solid var(--write-border);
+            white-space: pre-line;
+        }
+
+        .poem-lang {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--write-accent);
+            background: rgba(212, 168, 83, 0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Manga / story */
+        .story-card {
+            background: var(--write-card);
+            border: 1px solid var(--write-border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .story-card::after {
+            content: '"';
+            position: absolute;
+            bottom: -1rem;
+            right: 1.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 10rem;
+            color: rgba(212, 168, 83, 0.06);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .story-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--write-accent);
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .story-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-style: italic;
+            font-weight: 700;
+            color: var(--write-text);
+            margin-bottom: 1.2rem;
+            line-height: 1.3;
+        }
+
+        .story-body {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--write-muted);
+            line-height: 2;
+            font-size: 0.95rem;
+        }
+
+        .story-meta {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .story-meta-item {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.08em;
+            color: var(--write-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* Thoughts / Blog */
+        .thought-card {
+            border-left: 2px solid var(--write-border);
+            padding: 0 0 0 1.5rem;
+            margin-bottom: 2.5rem;
+            transition: border-color 0.25s;
+        }
+
+        .thought-card:hover {
+            border-color: var(--write-accent);
+        }
+
+        .thought-date {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            color: var(--write-accent);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .thought-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            color: var(--write-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .thought-body {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            font-style: italic;
+            color: var(--write-muted);
+            line-height: 1.9;
+        }
+
+        /* Write footer */
+        .write-footer {
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--write-border);
+        }
+
+        .write-footer p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--write-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Mode transition overlay */
+        #transition-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 900;
+            pointer-events: none;
+            opacity: 0;
+            background: #000;
+            transition: opacity 0.35s ease;
+        }
+
+        #transition-overlay.flash {
+            opacity: 0.6;
+        }
+
+        /* Typing cursor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background: currentColor;
+            margin-left: 2px;
+            vertical-align: middle;
+            animation: blink 0.85s steps(1) infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* Responsive nav */
+        @media (max-width: 480px) {
+            .toggle-label {
+                display: none;
+            }
+
+            #toggle-bar {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* progress bar */
+        #progress-bar {
+            position: fixed;
+            top: 54px;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--pro-accent), var(--pro-accent2));
+            z-index: 999;
+            transition: width 0.1s, background 0.7s;
+        }
+
+        body.writer #progress-bar {
+            background: linear-gradient(90deg, var(--write-accent), var(--write-accent2));
+        }
+
+        /* footer */
+        .pro-footer {
+            text-align: center;
+            padding: 2.5rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            color: var(--pro-muted);
+            border-top: 1px solid var(--pro-border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="transition-overlay"></div>
+    <div id="progress-bar" style="width:0%"></div>
+
+    <!-- ── NAV TOGGLE BAR ── -->
+    <div id="toggle-bar">
+        <div class="logo" id="nav-logo">Mariappan &lt;/&gt; </div>
+        <div class="toggle-wrap">
+            <span class="toggle-label active" id="label-pro">Developer</span>
+            <button id="mode-switch" role="switch" aria-checked="false" aria-label="Toggle personality mode"></button>
+            <span class="toggle-label" id="label-write">Artist</span>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     PROFESSIONAL MODE
+══════════════════════════════════════ -->
+    <div id="professional">
+
+        <!-- Hero -->
+        <section class="pro-hero">
+            <div class="pro-hero-grid"></div>
+            <div class="pro-hero-eyebrow">B.Tech IT · Full-Stack Developer · AI Enthusiast</div>
+            <h1>Building the future,<br /><span id="typed-text">one line at a time.</span></h1>
+            <p class="pro-hero-sub">
+                I'm a passionate developer turning complex problems into elegant solutions from intelligent image
+                classifiers to full stack applications.
+            </p>
+            <div class="pro-hero-cta">
+                <a href="#pro-projects" class="btn-primary">View Projects</a>
+                <a href="#pro-contact" class="btn-outline">Contact Me</a>
+            </div>
+        </section>
+
+        <div class="pro-divider"></div>
+
+        <!-- Skills -->
+        <section class="pro-section reveal" id="pro-skills">
+            <div class="pro-section-label">What I work with</div>
+            <h2 class="pro-section-title">Skills &amp; Technologies</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">☕</div>
+                    <div class="skill-name">Java</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🌐</div>
+                    <div class="skill-name">HTML / CSS</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">⚡</div>
+                    <div class="skill-name">JavaScript</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">⚛️</div>
+                    <div class="skill-name">React.js</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🖥️</div>
+                    <div class="skill-name">Node.js</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🤖</div>
+                    <div class="skill-name">AI / ML</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🗄️</div>
+                    <div class="skill-name">SQL</div>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🐙</div>
+                    <div class="skill-name">Git / GitHub</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="pro-divider"></div>
+
+        <!-- Projects -->
+        <section class="pro-section reveal" id="pro-projects">
+            <div class="pro-section-label">What I've built</div>
+            <h2 class="pro-section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-tag">AI · Image Classification</div>
+                    <div class="project-title">Garbage Classification System</div>
+                    <p class="project-desc">
+                        A convolutional neural network model that classifies waste materials organic, recyclable,
+                        electronic with real time camera inference, promoting smarter recycling workflows.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <div class="project-tag">AI · Computer Vision</div>
+                    <div class="project-title">Plant Disease Detector</div>
+                    <p class="project-desc">
+                        An image-recognition system trained on leaf datasets to identify 10+ crop diseases with
+                        confidence scores, helping farmers detect issues early and reduce loss.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <div class="project-tag">Full-Stack · Web App</div>
+                    <div class="project-title">Expense Management Software</div>
+                    <p class="project-desc">
+                        A full featured financial tracking application with category based budgeting, visual analytics
+                        dashboards, and secure multi user support for personal and team expense tracking.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <div class="project-tag">AI · Assistant</div>
+                    <div class="project-title">Mari's Personal AI Assistant</div>
+                    <p class="project-desc"> A Personal AI Assistant using Google Gemini that enables users to interact
+                        through natural language for smart and responsive communication.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="pro-divider"></div>
+
+        <!-- Education -->
+        <section class="pro-section reveal" id="pro-education">
+            <div class="pro-section-label">Academic background</div>
+            <h2 class="pro-section-title">Education</h2>
+            <div class="edu-card">
+                <div class="edu-badge">🎓</div>
+                <div>
+                    <div class="edu-degree">Bachelor of Technology — Information Technology</div>
+                    <div style="font-size:0.85rem;color:var(--pro-muted);margin:0.3rem 0 0.4rem;">Currently pursuing ·
+                        Final year</div>
+                    <div class="edu-cgpa">CGPA: 7.17 / 10 · Consistent semester-over-semester improvement</div>
+                    <div style="margin-top:0.8rem;font-size:0.82rem;color:var(--pro-muted);line-height:1.7;">
+                        Coursework spans Data Structures, Algorithms, Operating Systems, DBMS, AI &amp; Machine
+                        Learning, Web Technologies, and Software Engineering.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="pro-divider"></div>
+
+        <!-- Split / Two Sides -->
+        <section class="split-section reveal">
+            <div class="split-inner">
+                <div class="split-side split-pro">
+                    <div
+                        style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--pro-accent);margin-bottom:0.6rem;">
+                        Logic</div>
+                    <div class="split-title" style="font-size:1.1rem;font-weight:700;margin-bottom:0.7rem;">The
+                        Developer in Me</div>
+                    <div class="split-body">I find peace in structure. Clean architecture, efficient algorithms,
+                        <b>well-documented code.</b> There's beauty in a function that does exactly what it should no
+                        more, no less. Logic is my love language.
+                    </div>
+                </div>
+                <div class="split-side split-write">
+                    <div
+                        style="font-family:'Caveat',cursive;font-size:0.9rem;color:var(--write-accent);margin-bottom:0.6rem;">
+                        Emotion</div>
+                    <div class="split-title"
+                        style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.1rem;margin-bottom:0.7rem;">
+                        The Writer in Me</div>
+                    <div class="split-body"
+                        style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;line-height:1.9;">
+                        Some truths don't fit into a codebase. They need metaphor, rhythm, and the quiet ache of the
+                        right word in the right place. I write Tamil poems. I build worlds. Both are acts of creation.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="pro-section reveal" id="pro-contact">
+            <div class="pro-section-label">Let's connect</div>
+            <h2 class="pro-section-title">Get In Touch</h2>
+            <p style="color:var(--pro-muted);max-width:480px;line-height:1.8;font-size:0.95rem;">
+                I'm actively seeking full-stack developer roles and internship opportunities. Open to collaboration,
+                open-source, and anything that ships.
+            </p>
+            <div class="contact-links">
+                <a class="contact-link" href="mailto:mariappan15122005@gmail.com">✉ Email</a>
+                <a class="contact-link" href="https://github.com/Mariappan-B">⌥ GitHub</a>
+                <a class="contact-link" href="https://www.linkedin.com/in/mariappanb/">∞ LinkedIn</a>
+                <a class="contact-link" href="./MARIAPPAN.B_Resume.pdf" download>◎ Resume</a>
+            </div>
+        </section>
+
+        <div class="pro-footer">
+            &lt;/&gt; Built with curiosity · Deployed with ambition · &copy; 2026
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     WRITER MODE
+══════════════════════════════════════ -->
+    <div id="writer">
+
+        <!-- Hero -->
+        <section class="write-hero">
+            <div class="write-ornament">✦</div>
+            <div class="write-hero-intro">words i couldn't say out loud…</div>
+            <h1>Between the <em>code</em><br />and the <em>pen</em></h1>
+            <p class="write-hero-quote">
+                "I am a developer who writes verses in Tamil,<br />
+                and an Artist who Designs / speaks in functions."
+            </p>
+            <div class="write-hero-ink"></div>
+        </section>
+
+        <!-- Poetry Section -->
+        <section class="write-section reveal">
+            <div class="write-section-eyebrow">~ collected verses</div>
+            <h2 class="write-section-title">Poems from the dark hours</h2>
+
+            <div class="poem-card" onclick="togglePoem(this)">
+                <div class="poem-header">
+                    <div style="display:flex;align-items:center;gap:0.8rem;">
+                        <span class="poem-lang">Tamil</span>
+                        <span class="poem-title">காவியமோ அவள்</span>
+                    </div>
+                    <span class="poem-chevron">▾</span>
+                </div>
+                <div class="poem-body">
+                    <div class="poem-text">திடீரென்று தோன்றும், ஒரு பாலுமகேந்திரா படமோ, மணிரத்னம் படமோ பார்க்க
+                        வேண்டுமென்று. அதற்கெல்லாம் நேரம் இருக்காது, சரி ஒரு இளையராஜா பாடலாவது கேட்போம் என்று தோன்றும்.
+                        சில சமயங்களில் அதற்கும் கூட சந்தர்ப்பங்கள் சரியாக இருக்காது. சட்டென்று மொபைலை எடுத்து உன்
+                        புகைப்படங்களைப் பார்த்து சந்தோஷம் கொள்வேன்.
+                        வாகனம் ஓட்டிக் கொண்டிருந்தாலோ, நண்பர்களுடன் இருக்கும் பொழுதோ அதற்கும் சூழ்நிலை சரியிருக்காது.
+                        அப்பொழுதெல்லாம் உன்னைப் பற்றிய சிறு நினைப்பே போதுமானது. பெரும்பாலும் நினைத்துக்கொண்டே தான்
+                        இருக்கிறேன்.
+                        நீ ரைஸ் மில்லைக் கடந்து சென்றாலோ, புத்தக அலமாரியைத் தூசி தட்டினாலோ கூட,
+                        தும்மல் வருவது என்னாலாகத்தான் இருக்கக்கூடும்.</div>
+                </div>
+            </div>
+
+            <div class="poem-card" onclick="togglePoem(this)">
+                <div class="poem-header">
+                    <div style="display:flex;align-items:center;gap:0.8rem;">
+                        <span class="poem-lang">Tamil</span>
+                        <span class="poem-title">பரண் மேலே கிடக்கும் ஆதிக்கம்</span>
+                    </div>
+                    <span class="poem-chevron">▾</span>
+                </div>
+                <div class="poem-body">
+                    <div class="poem-text">கண் முழித்தவுடன் எழுந்து முருக்கோ, மிச்சரோ காப்பியில் போட்டு குடிப்பதுடன் சரி
+                        தலையணையோ, போர்வையோ, பாயோ எதுவுமே எடுத்து வைக்கும் பழக்கம் இருந்தது இல்லை அவள் (அக்கா)
+                        வாக்கப்பட்டு போவது வரை.
+
+                        இப்பொழுது மணி 7 ஆயிருச்சு இந்நேரம் அக்கா மாமாவுக்கு காபி போட்டு கொண்டு இருக்கலாம், அல்லது
+                        டிபனுக்கு காய் நறுக்கி கொண்டு இருக்கலாம், ஒருவேளை காலங்காத்தாலேயே மாமியாரிடம் திட்டு கூட
+                        வாங்கிக் கொண்டு இருக்கலாம்,
+
+                        முதல் பீரியட் கண்ணகி டீச்சர் பீரியட், கல்லூரிக்கு நேரம் ஆகிவிட்டது, பாயுடன் சேர்த்து உதறி தூக்கி
+                        பரண் மேலே எறிகிறேன் ஆணாதிக்கத்தையும்...</div>
+                </div>
+            </div>
+
+            <div class="poem-card" onclick="togglePoem(this)">
+                <div class="poem-header">
+                    <div style="display:flex;align-items:center;gap:0.8rem;">
+                        <span class="poem-lang">English</span>
+                        <span class="poem-title">Need & Want</span>
+                    </div>
+                    <span class="poem-chevron">▾</span>
+                </div>
+                <div class="poem-body">
+                    <div class="poem-text">We can fulfill the needs of the world but we cannot fulfill the desires of a
+                        single person </div>
+                </div>
+            </div>
+        </section>
+
+        <div
+            style="width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--write-border),transparent);max-width:860px;margin:0 auto;">
+        </div>
+
+        <!-- Manga / Story -->
+        <section class="write-section reveal">
+            <div class="write-section-eyebrow">~ ongoing work</div>
+            <h2 class="write-section-title">The story I'm writing</h2>
+
+            <div class="story-card">
+                <span class="story-tag">Story · Slice of life · Ongoing</span>
+                <div class="story-title">Reminders of That Day</div>
+                <div class="story-body">
+                    A story about the moments we never stop carrying a single day that rewrote everything. Two people.
+                    A fractured memory. And the quiet devastation of realising that time moves forward but the heart
+                    doesn't always follow.
+                    <br /><br />
+                    Written with introspection and restraint. No grand speeches just the weight of ordinary moments,
+                    the kind that sting years later when you least expect them.
+                </div>
+                <div class="story-meta">
+                    <div class="story-meta-item">✦ Genre: Slice of life · Drama</div>
+                    <div class="story-meta-item">✦ Medium: Book ( Tamil )</div>
+                    <div class="story-meta-item">✦ Status: In Development</div>
+                </div>
+            </div>
+        </section>
+
+        <div
+            style="width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--write-border),transparent);max-width:860px;margin:0 auto;">
+        </div>
+
+        <!-- Thoughts -->
+        <section class="write-section reveal">
+            <div class="write-section-eyebrow">~ inner monologue</div>
+            <h2 class="write-section-title">Scattered thoughts</h2>
+
+            <div class="thought-card">
+                <div class="thought-date">எண்ணங்கள் </div>
+                <div class="thought-title">இரண்டே விசயம் தான்</div>
+                <div class="thought-body">வாழ்க்கையில ஒவ்வொரு தருணத்திலும் நினைக்குறது இரண்டே விசயம்தான் ஒன்னு " இந்த
+                    தருணம் கனவா மட்டும் இருந்துட கூடாது "
+                    இன்னொன்னு " இந்த தருணம் எப்படியாவது கனவா இருந்துடனும், இப்பவே தூக்கத்தில இருந்து முழிச்சுக்கனும்".
+                </div>
+            </div>
+
+            <div class="thought-card">
+                <div class="thought-date">எண்ணங்கள் </div>
+                <div class="thought-title">How Long ?</div>
+                <div class="thought-body">Why we concerned about How long we're traveling, when the travel itself an
+                    experience.</div>
+            </div>
+
+            <div class="thought-card">
+                <div class="thought-date">எண்ணங்கள் </div>
+                <div class="thought-title">Rock</div>
+                <div class="thought-body">I Don't have anything but surely I can make Everything.</div>
+            </div>
+        </section>
+
+        <!-- Write footer -->
+        <div class="write-footer">
+            <p>"I build things. I break things. I write about both."</p>
+            <div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;">
+                <a href="#"
+                    style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;color:var(--write-accent);text-decoration:none;border:1px solid var(--write-border);padding:0.4rem 0.9rem;border-radius:6px;">✉
+                    Reach out</a>
+                <a href="#"
+                    style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;color:var(--write-muted);text-decoration:none;border:1px solid var(--write-border);padding:0.4rem 0.9rem;border-radius:6px;">⌥
+                    Instagram</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ── Mode Toggle ──
+        const btn = document.getElementById('mode-switch');
+        const body = document.body;
+        const overlay = document.getElementById('transition-overlay');
+        const labelPro = document.getElementById('label-pro');
+        const labelWrite = document.getElementById('label-write');
+        const navLogo = document.getElementById('nav-logo');
+        let writerMode = false;
+
+        btn.addEventListener('click', () => {
+            overlay.classList.add('flash');
+            setTimeout(() => {
+                writerMode = !writerMode;
+                if (writerMode) {
+                    body.classList.add('writer');
+                    btn.classList.add('on');
+                    btn.setAttribute('aria-checked', 'true');
+                    labelPro.classList.remove('active');
+                    labelWrite.classList.add('active');
+                    navLogo.textContent = 'அமுதவிஷம்';
+                } else {
+                    body.classList.remove('writer');
+                    btn.classList.remove('on');
+                    btn.setAttribute('aria-checked', 'false');
+                    labelPro.classList.add('active');
+                    labelWrite.classList.remove('active');
+                    navLogo.textContent = 'Mariappan </>';
+                }
+                window.scrollTo({ top: 0, behavior: 'instant' });
+                overlay.classList.remove('flash');
+                triggerReveals();
+            }, 350);
+        });
+
+        // ── Poem toggle ──
+        function togglePoem(card) {
+            card.classList.toggle('open');
+        }
+
+        // ── Scroll Reveal ──
+        function triggerReveals() {
+            const reveals = document.querySelectorAll('.reveal');
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.12 });
+            reveals.forEach(el => {
+                el.classList.remove('visible');
+                obs.observe(el);
+            });
+        }
+
+        triggerReveals();
+
+        // ── Progress bar ──
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+            document.getElementById('progress-bar').style.width = pct + '%';
+        });
+
+        // ── Typing Effect ──
+        (function () {
+            const lines = [
+                'one line at a time.',
+                'with purpose.',
+                'for a better world.',
+            ];
+            const el = document.getElementById('typed-text');
+            if (!el) return;
+            let lineIdx = 0, charIdx = 0, deleting = false;
+            const cursor = document.createElement('span');
+            cursor.className = 'typing-cursor';
+
+            function tick() {
+                const current = lines[lineIdx];
+                if (!deleting) {
+                    el.textContent = current.slice(0, charIdx + 1);
+                    charIdx++;
+                    if (charIdx === current.length) {
+                        el.appendChild(cursor);
+                        setTimeout(() => { deleting = true; tick(); }, 2200);
+                        return;
+                    }
+                } else {
+                    el.textContent = current.slice(0, charIdx - 1);
+                    charIdx--;
+                    if (charIdx === 0) {
+                        deleting = false;
+                        lineIdx = (lineIdx + 1) % lines.length;
+                    }
+                }
+                setTimeout(tick, deleting ? 45 : 80);
+            }
+
+            setTimeout(tick, 900);
+        })();
+    </script>
+</body>
+
+</html>
