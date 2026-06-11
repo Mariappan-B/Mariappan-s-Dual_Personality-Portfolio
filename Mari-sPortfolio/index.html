@@ -367,8 +367,26 @@
         }
 
         .skill-icon {
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
+            margin: 0 auto 0.75rem;
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+        }
+
+        .skill-icon img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
         }
 
         .skill-name {
@@ -1024,36 +1042,36 @@
             <h2 class="pro-section-title">Skills &amp; Technologies</h2>
             <div class="skills-grid">
                 <div class="skill-card">
-                    <div class="skill-icon">☕</div>
+                    <div class="skill-icon"><img src="assets/java-logo.svg" alt="Java logo placeholder" /></div>
                     <div class="skill-name">Java</div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon">🌐</div>
+                    <div class="skill-icon"><img src="assets/html5-logo.svg" alt="HTML CSS logo placeholder" /></div>
                     <div class="skill-name">HTML / CSS</div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon">⚡</div>
+                    <div class="skill-icon"><img src="assets/js-logo.svg" alt="JavaScript logo placeholder" /></div>
                     <div class="skill-name">JavaScript</div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon">⚛️</div>
+                    <div class="skill-icon"><img src="assets/React-logo.svg" alt="React logo placeholder" /></div>
                     <div class="skill-name">React.js</div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon">🖥️</div>
-                    <div class="skill-name">Node.js</div>
+                    <div class="skill-icon"><img src="assets/nextjs-logo.svg" alt="Next.js logo placeholder" /></div>
+                    <div class="skill-name">Next.js</div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon">🤖</div>
-                    <div class="skill-name">AI / ML</div>
+                    <div class="skill-icon"><img src="assets/mysql-logo.svg" alt="MySQL logo placeholder" /></div>
+                    <div class="skill-name">MySQL</div>
+                </div>
+                                <div class="skill-card">
+                    <div class="skill-icon"><img src="assets/git-logo.svg" alt="Git logo placeholder" /></div>
+                    <div class="skill-name">Git</div>
                 </div>
                 <div class="skill-card">
-                    <div class="skill-icon">🗄️</div>
-                    <div class="skill-name">SQL</div>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🐙</div>
-                    <div class="skill-name">Git / GitHub</div>
+                    <div class="skill-icon"><img src="assets/github-logo.svg" alt="GitHub logo placeholder" /></div>
+                    <div class="skill-name">GitHub</div>
                 </div>
             </div>
         </section>
