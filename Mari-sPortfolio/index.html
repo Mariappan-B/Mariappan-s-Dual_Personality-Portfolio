@@ -28,15 +28,15 @@
             --pro-muted: #475569;
             --pro-border: rgba(37, 99, 235, 0.15);
             --pro-glow: rgba(37, 99, 235, 0.08);
-            --write-bg: #F8FAFC;
-            --write-surface: #F1F5F9;
-            --write-card: #FFFFFF;
-            --write-accent: #2563EB;
-            --write-accent2: #60A5FA;
-            --write-text: #0F172A;
-            --write-muted: #475569;
-            --write-border: rgba(37, 99, 235, 0.15);
-            --write-glow: rgba(37, 99, 235, 0.08);
+            --write-bg: #FFF5E6;
+            --write-surface: #FFF0DA;
+            --write-card: #FFF9F1;
+            --write-accent: #B46A13;
+            --write-accent2: #E8A13A;
+            --write-text: #2B1F11;
+            --write-muted: #6E5132;
+            --write-border: rgba(180, 106, 19, 0.15);
+            --write-glow: rgba(232, 161, 58, 0.14);
             --surface-soft: rgba(15, 23, 42, 0.03);
             --surface-glass: rgba(255, 255, 255, 0.85);
             --overlay: rgba(15, 23, 42, 0.75);
@@ -46,6 +46,9 @@
 
         html {
             scroll-behavior: smooth;
+            min-height: 100%;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
         }
 
         body {
@@ -55,6 +58,20 @@
             transition: background var(--transition), color var(--transition);
             overflow-x: hidden;
             min-height: 100vh;
+            will-change: background, color;
+        }
+
+        #toggle-bar,
+        #progress-bar,
+        #transition-overlay {
+            will-change: transform, opacity, width;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            will-change: opacity, transform;
         }
 
         body.writer {
@@ -92,8 +109,9 @@
         }
 
         body.writer #toggle-bar {
-            background: var(--surface-glass);
+            background: rgba(255, 245, 229, 0.9);
             border-color: var(--write-border);
+            box-shadow: 0 12px 40px rgba(214, 147, 68, 0.08);
         }
 
         #toggle-bar .logo {
@@ -108,6 +126,7 @@
             font-family: 'Caveat', cursive;
             font-size: 1.1rem;
             color: var(--write-accent);
+            letter-spacing: 0.04em;
         }
 
         .toggle-wrap {
@@ -420,30 +439,14 @@
             padding: 1.8rem;
             position: relative;
             overflow: hidden;
-            transition: border-color 0.3s, transform 0.3s;
+            transition: transform 0.3s, box-shadow 0.3s;
             cursor: default;
         }
 
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--pro-accent), var(--pro-accent2));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s;
-        }
-
-        .project-card:hover::before {
-            transform: scaleX(1);
-        }
-
         .project-card:hover {
-            border-color: var(--pro-accent);
+            background: var(--pro-card);
             transform: translateY(-4px);
+            box-shadow: 0 10px 26px rgba(37, 99, 235, 0.12);
         }
 
         .project-tag {
@@ -495,6 +498,14 @@
             justify-content: center;
             font-size: 1.6rem;
             flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .edu-badge img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
         .edu-degree {
@@ -619,7 +630,7 @@
             transform: translateX(-50%);
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 65%);
+            background: radial-gradient(circle, rgba(232, 161, 58, 0.14) 0%, transparent 60%);
             pointer-events: none;
         }
 
@@ -674,7 +685,7 @@
             left: 0;
             width: 100%;
             height: 200px;
-            background: linear-gradient(to top, rgba(15, 23, 42, 0.08), transparent);
+            background: linear-gradient(to top, rgba(180, 106, 19, 0.08), transparent);
             pointer-events: none;
         }
 
@@ -768,7 +779,7 @@
             letter-spacing: 0.15em;
             text-transform: uppercase;
             color: var(--write-accent);
-            background: rgba(37, 99, 235, 0.08);
+            background: rgba(180, 106, 19, 0.1);
             padding: 0.15rem 0.5rem;
             border-radius: 4px;
         }
@@ -790,7 +801,7 @@
             right: 1.5rem;
             font-family: 'Playfair Display', serif;
             font-size: 10rem;
-            color: rgba(37, 99, 235, 0.08);
+            color: rgba(180, 106, 19, 0.08);
             line-height: 1;
             pointer-events: none;
         }
@@ -1078,13 +1089,43 @@
                     <div class="skill-icon"><img src="assets/github-logo.svg" alt="GitHub logo placeholder" /></div>
                     <div class="skill-name">GitHub</div>
                 </div>
+                                <div class="skill-card">
+                    <div class="skill-icon"><img src="assets/github-logo.svg" alt="GitHub logo placeholder" /></div>
+                    <div class="skill-name">GitHub</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="pro-divider"></div>
+
+        <!-- Internships -->
+        <section class="pro-section reveal" id="pro-internships">
+            <div class="pro-section-label">Industry experience</div>
+            <h2 class="pro-section-title">Internships</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-tag">Fullstack Development </div>
+                    <div class="project-title">Full-Stack Developer <a href="https://www.digisailor.com/">DIGISAILOR</a></div>
+                    <p class="project-desc">
+                        Designed responsive landing pages and polished UI interactions using HTML, CSS, and JavaScript.
+                        Collaborated with designers and developers to improve load performance and accessibility.
+                    </p>
+                </div>
+                <div class="project-card">
+                    <div class="project-tag">Frontend Development</div>
+                    <div class="project-title">Front-End Developer <a href="https://youthunitedcouncilofindia.org/">YOUTH UNITED COUNCIL OF INDIA</a></div>
+                    <p class="project-desc">
+                        Built automation scripts and assisted in backend API integration for a customer support platform.
+                        Helped streamline deployment processes and contributed to debugging key production issues.
+                    </p>
+                </div>
             </div>
         </section>
 
         <div class="pro-divider"></div>
 
         <!-- Projects -->
-        <section class="pro-section reveal" id="pro-projects">
+        <section class="pro-section" id="pro-projects">
             <div class="pro-section-label">What I've built</div>
             <h2 class="pro-section-title">Featured Projects</h2>
             <div class="projects-grid">
@@ -1129,7 +1170,7 @@
             <div class="pro-section-label">Academic background</div>
             <h2 class="pro-section-title">Education</h2>
             <div class="edu-card">
-                <div class="edu-badge">🎓</div>
+                <div class="edu-badge"><img src="assets/college-logo.jpg" alt="Education badge placeholder" /></div>
                 <div>
                     <div class="edu-degree">Bachelor of Technology — Information Technology</div>
                     <div style="font-size:0.85rem;color:var(--pro-muted);margin:0.3rem 0 0.4rem;">Currently pursuing ·
@@ -1187,7 +1228,7 @@
                 <a class="contact-link" href="mailto:mariappan15122005@gmail.com">✉ Email</a>
                 <a class="contact-link" href="https://github.com/Mariappan-B">⌥ GitHub</a>
                 <a class="contact-link" href="https://www.linkedin.com/in/mariappanb/">∞ LinkedIn</a>
-                <a class="contact-link" href="./MARIAPPAN.B_Resume.pdf" download>◎ Resume</a>
+                <a class="contact-link" href="./assets/MARIAPPAN.B_Resume.pdf" download>◎ Resume</a>
             </div>
         </section>
 
@@ -1410,11 +1451,20 @@
         triggerReveals();
 
         // ── Progress bar ──
+        const progressBar = document.getElementById('progress-bar');
+        let progressTicking = false;
+
         window.addEventListener('scroll', () => {
-            const h = document.documentElement;
-            const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-            document.getElementById('progress-bar').style.width = pct + '%';
-        });
+            if (!progressTicking) {
+                progressTicking = true;
+                window.requestAnimationFrame(() => {
+                    const h = document.documentElement;
+                    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+                    progressBar.style.width = pct + '%';
+                    progressTicking = false;
+                });
+            }
+        }, { passive: true });
 
         // ── Typing Effect ──
         (function () {
