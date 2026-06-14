@@ -1,2 +1,2 @@
-# Mariappan-s-Dual_Personality-Portfolio
+# Mariappan's Dual Personality Portfolio
 A Dual Personality Portfolio of Mine
